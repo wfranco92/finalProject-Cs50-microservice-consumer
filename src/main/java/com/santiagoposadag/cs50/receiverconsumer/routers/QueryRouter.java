@@ -51,7 +51,7 @@ public class QueryRouter {
                 request -> ServerResponse.ok()
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(BodyInserters.fromPublisher(
-                                getSellActionsFromAUserUseCase.apply(request.pathVariable("userID")),
+                                getSellActionsFromAUserUseCase.apply(request.pathVariable("userId")),
                                 SoldCryptoCurrencyDto.class
                         ))
         );
