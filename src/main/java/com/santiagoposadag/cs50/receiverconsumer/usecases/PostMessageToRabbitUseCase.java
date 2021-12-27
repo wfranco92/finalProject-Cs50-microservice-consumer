@@ -2,7 +2,7 @@ package com.santiagoposadag.cs50.receiverconsumer.usecases;
 
 
 import com.google.gson.Gson;
-import com.santiagoposadag.cs50.receiverconsumer.config.RabbitMQConfig;
+import com.santiagoposadag.cs50.receiverconsumer.config.GeneralActionConsumerRabbitMQ;
 import com.santiagoposadag.cs50.receiverconsumer.dto.CryptoCurrencyDto;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class PostMessageToRabbitUseCase implements Function<CryptoCurrencyDto, M
 
     @Override
     public Mono<CryptoCurrencyDto> apply(@Validated CryptoCurrencyDto cryptoCurrencyDto) {
-        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE, cryptoCurrencyDto.getRoutingKey(), gson.toJson(cryptoCurrencyDto));
+        //rabbitTemplate.convertAndSend(GeneralActionConsumerRabbitMQ.EXCHANGE, cryptoCurrencyDto.getRoutingKey(), gson.toJson(cryptoCurrencyDto));
         return Mono.just(cryptoCurrencyDto);
     }
 }

@@ -1,10 +1,11 @@
 package com.santiagoposadag.cs50.receiverconsumer.usecases;
 
 
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
-@Service
-@Validated
+import org.springframework.stereotype.Component;
+@Component
 public class RecieveFromGeneralActionQueueUseCase {
+
+    public void receiveMessage(String message){
+        System.out.println("Received: " + message);
+    }
 }
