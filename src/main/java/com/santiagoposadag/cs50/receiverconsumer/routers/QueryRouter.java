@@ -2,7 +2,6 @@ package com.santiagoposadag.cs50.receiverconsumer.routers;
 
 
 import com.santiagoposadag.cs50.receiverconsumer.dto.CryptoCurrencyDto;
-import com.santiagoposadag.cs50.receiverconsumer.usecases.PostMessageToRabbitUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
@@ -21,10 +20,7 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 @Configuration
 public class QueryRouter {
 
-    @Autowired
-    ApplicationEventPublisher publisher;
-
-    @Bean
+    /*@Bean
     public RouterFunction<ServerResponse> postActionRoute(PostMessageToRabbitUseCase postMessageToRabbit){
         Function<CryptoCurrencyDto, Mono<ServerResponse>> executor =
                 cryptoCurrencyDto -> postMessageToRabbit.apply(cryptoCurrencyDto)
@@ -35,6 +31,6 @@ public class QueryRouter {
         return route(POST("/SendAction")
                 .and(accept(MediaType.APPLICATION_JSON)),
                 request -> request.bodyToMono(CryptoCurrencyDto.class).flatMap(executor));
+    }*/
 
-    }
 }
