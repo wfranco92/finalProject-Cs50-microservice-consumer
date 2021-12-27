@@ -1,17 +1,18 @@
 package com.santiagoposadag.cs50.receiverconsumer.routers;
 
 
+import com.santiagoposadag.cs50.receiverconsumer.dto.BoughtCryptoCurrencyDto;
 import com.santiagoposadag.cs50.receiverconsumer.dto.CryptoCurrencyDto;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
+import com.santiagoposadag.cs50.receiverconsumer.dto.SoldCryptoCurrencyDto;
+import com.santiagoposadag.cs50.receiverconsumer.usecases.GetAllActionsFromAUserUseCase;
+import com.santiagoposadag.cs50.receiverconsumer.usecases.GetBuyActionsFromAUserUseCase;
+import com.santiagoposadag.cs50.receiverconsumer.usecases.GetSellActionsFromAUserUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Mono;
-
-import java.util.function.Function;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.*;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
@@ -20,17 +21,40 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 @Configuration
 public class QueryRouter {
 
-    /*@Bean
-    public RouterFunction<ServerResponse> postActionRoute(PostMessageToRabbitUseCase postMessageToRabbit){
-        Function<CryptoCurrencyDto, Mono<ServerResponse>> executor =
-                cryptoCurrencyDto -> postMessageToRabbit.apply(cryptoCurrencyDto)
-                        .flatMap(result -> ServerResponse.ok()
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .bodyValue(result));
+    @Bean
+    public RouterFunction<ServerResponse> getAllActionsByUserId(GetAllActionsFromAUserUseCase getAllActionsFromAUserUseCase){
+        return route(GET("/getAllActions/{userId}"),
+                request -> ServerResponse.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(BodyInserters.fromPublisher(
+                                getAllActionsFromAUserUseCase.apply(request.pathVariable("userId")),
+                                CryptoCurrencyDto.class
+                        ))
+        );
+    }
 
-        return route(POST("/SendAction")
-                .and(accept(MediaType.APPLICATION_JSON)),
-                request -> request.bodyToMono(CryptoCurrencyDto.class).flatMap(executor));
-    }*/
+    @Bean
+    public RouterFunction<ServerResponse> getBuyActionsByUserId(GetBuyActionsFromAUserUseCase getBuyActionsFromAUserUseCase){
+        return route(GET("/getBuyActions/{userId}"),
+                request -> ServerResponse.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(BodyInserters.fromPublisher(
+                                getBuyActionsFromAUserUseCase.apply(request.pathVariable("userId")),
+                                BoughtCryptoCurrencyDto.class
+                        ))
+        );
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> getSellActionsByUserId(GetSellActionsFromAUserUseCase getSellActionsFromAUserUseCase){
+        return route(GET("/getSellActions/{userId}"),
+                request -> ServerResponse.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(BodyInserters.fromPublisher(
+                                getSellActionsFromAUserUseCase.apply(request.pathVariable("userID")),
+                                SoldCryptoCurrencyDto.class
+                        ))
+        );
+    }
 
 }
