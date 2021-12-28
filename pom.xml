@@ -78,6 +78,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>cs50-finalproject-consumer</finalName>
 	</build>
 
 </project>
